@@ -30,10 +30,12 @@ import {
     Text,
     View,
     FlatList,
+    TouchableHighlight
 } from 'react-native';
 
 import {StackNavigator} from 'react-navigation';
 import {oauth, net} from 'react-native-force';
+import AccountDetail from './src/AccountDetail';
 
 class UserListScreen extends React.Component {
     static navigationOptions = {
@@ -59,17 +61,20 @@ class UserListScreen extends React.Component {
 
     fetchData() {
         var that = this;
-        net.query('SELECT Id, Name FROM Account',
+        net.query('SELECT Id,Name,Owner.Name,Active__c,BillingAddress,Description,Type,Website,Industry,Phone FROM Account',
                   (response) => that.setState({data: response.records})
                  );
     }
 
     render() {
+
+        const { navigate } = this.props.navigation;
+
         return (
             <View style={styles.container}>
               <FlatList
                 data={this.state.data}
-                renderItem={({item}) => <Text style={styles.item}>{item.Name}</Text>}
+                renderItem={({item}) => <TouchableHighlight underlayColor='lightgray' onPress={() => navigate('Account', { data: item })}><Text style={styles.item}>{item.Name}</Text></TouchableHighlight>}
                 keyExtractor={(item, index) => index}
               />
             </View>
@@ -84,6 +89,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     item: {
+        color: 'blue',
+        borderBottomWidth: 1,
+        borderBottomColor: 'black',
         padding: 10,
         fontSize: 18,
         height: 44,
@@ -91,6 +99,11 @@ const styles = StyleSheet.create({
 });
 
 export const App = StackNavigator({
-    UserList: { screen: UserListScreen }
+    AccountsList: { screen: UserListScreen },
+    Account: { 
+        screen: AccountDetail,
+        navigationOptions: ({ navigation }) => ({
+            title: navigation.state.params.data.Name
+        })
+    }
 });
-
