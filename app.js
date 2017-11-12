@@ -37,7 +37,7 @@ import {oauth, net} from 'react-native-force';
 
 class UserListScreen extends React.Component {
     static navigationOptions = {
-        title: 'Mobile SDK Sample App'
+        title: 'Accounts'
     };
 
     constructor(props) {
@@ -59,7 +59,7 @@ class UserListScreen extends React.Component {
 
     fetchData() {
         var that = this;
-        net.query('SELECT Id, Name FROM User LIMIT 10',
+        net.query('SELECT Id, Name FROM Account',
                   (response) => that.setState({data: response.records})
                  );
     }
