@@ -36,6 +36,7 @@ import {
 import {StackNavigator} from 'react-navigation';
 import {oauth, net} from 'react-native-force';
 import AccountDetail from './src/AccountDetail';
+import AccountEdit from './src/AccountEdit';
 
 class UserListScreen extends React.Component {
     static navigationOptions = {
@@ -105,5 +106,8 @@ export const App = StackNavigator({
         navigationOptions: ({ navigation }) => ({
             title: navigation.state.params.data.Name
         })
+    },
+    AccountEdit: {
+        screen: AccountEdit
     }
 });
